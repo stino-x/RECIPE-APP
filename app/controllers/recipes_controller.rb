@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[ show edit update destroy ]
+  before_action :set_recipe, only: %i[show edit update destroy]
 
   # GET /recipes or /recipes.json
   def index
@@ -8,6 +8,13 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1 or /recipes/1.json
   def show
+    # Load ingredients associated with the recipe
+    @ingredients = @recipe.recipe_foods.includes(:food)
+  end
+
+  def toggle_public
+    @recipe.toggle!(:public)
+    redirect_to @recipe, notice: 'Recipe visibility toggled.'
   end
 
   # GET /recipes/new
@@ -16,7 +23,21 @@ class RecipesController < ApplicationController
   end
 
   # GET /recipes/1/edit
-  def edit
+  def edit; end
+
+  # GET /public_recipes
+  def public_index
+    @public_recipes_info = @public_recipes.map do |recipe|
+      total_food_items = recipe.recipe_foods.sum(:quantity)
+      total_price = recipe.recipe_foods.sum { |rf| rf.quantity * rf.food.price }
+
+      {
+        recipe:,
+        user: recipe.user,
+        total_food_items:,
+        total_price:
+      }
+    end
   end
 
   # POST /recipes or /recipes.json
@@ -25,7 +46,7 @@ class RecipesController < ApplicationController
 
     respond_to do |format|
       if @recipe.save
-        format.html { redirect_to recipe_url(@recipe), notice: "Recipe was successfully created." }
+        format.html { redirect_to recipe_url(@recipe), notice: 'Recipe was successfully created.' }
         format.json { render :show, status: :created, location: @recipe }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +59,7 @@ class RecipesController < ApplicationController
   def update
     respond_to do |format|
       if @recipe.update(recipe_params)
-        format.html { redirect_to recipe_url(@recipe), notice: "Recipe was successfully updated." }
+        format.html { redirect_to recipe_url(@recipe), notice: 'Recipe was successfully updated.' }
         format.json { render :show, status: :ok, location: @recipe }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -49,22 +70,23 @@ class RecipesController < ApplicationController
 
   # DELETE /recipes/1 or /recipes/1.json
   def destroy
-    @recipe.destroy!
+    @recipe.destroy
 
     respond_to do |format|
-      format.html { redirect_to recipes_url, notice: "Recipe was successfully destroyed." }
+      format.html { redirect_to recipes_url, notice: 'Recipe was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_recipe
-      @recipe = Recipe.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def recipe_params
-      params.require(:recipe).permit(:name, :preparationtime, :cookingtime, :description, :public, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_recipe
+    @recipe = Recipe.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def recipe_params
+    params.require(:recipe).permit(:name, :preparationtime, :cookingtime, :description, :public, :user_id)
+  end
 end

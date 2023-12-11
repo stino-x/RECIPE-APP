@@ -2,13 +2,18 @@
 
 <h1>Recipes</h1>
 
-<div id="recipes">
-  <% @recipes.each do |recipe| %>
-    <%= render recipe %>
-    <p>
-      <%= link_to "Show this recipe", recipe %>
-    </p>
-  <% end %>
+<div id="<%= dom_id inventory %>">
+          <% @recipes.each do |recipe| %>
+           <div>
+              <span>
+              <%= recipe.name %>
+              <%= link_to 'Destroy', recipe, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </span>
+              <span>
+              <p>
+              <%= recipe.description %>
+              </p>
+              </span>
+           </div>
+          <% end %>
 </div>
-
-<%= link_to "New recipe", new_recipe_path %>
