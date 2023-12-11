@@ -1,3 +1,5 @@
+# app/controllers/inventory_foods_controller.rb
+
 class InventoryFoodsController < ApplicationController
   before_action :set_inventory_food, only: %i[show edit update destroy]
 
