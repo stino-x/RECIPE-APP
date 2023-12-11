@@ -1,0 +1,13 @@
+<h1><%= @inventory.name %></h1>
+
+<!-- Display inventory details -->
+
+<h2>Inventory Foods</h2>
+<ul>
+  <% @inventory_foods.each do |inventory_food| %>
+    <li>
+      <%= inventory_food.food.name %> - Quantity: <%= inventory_food.quantity %>
+      <%= link_to 'Destroy', inventory_food, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </li>
+  <% end %>
+</ul>

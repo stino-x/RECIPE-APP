@@ -1,0 +1,18 @@
+<p style="color: green"><%= notice %></p>
+
+<div id="<%= dom_id inventory %>">
+          <% @inventories.each do |inventory| %>
+           <div>
+              <span>
+              <%= inventory.name %>
+              <%= link_to 'Destroy', inventory, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </span>
+              <span>
+              <p>
+              <%= inventory.description %>
+              </p>
+              </span>
+           </div>
+          <% end %>
+</div>
+

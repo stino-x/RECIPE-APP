@@ -1,0 +1,28 @@
+<!-- app/views/inventories/shopping_list.html.erb -->
+<h1>Shopping List</h1>
+
+<p><strong>Amount of Food to Buy:</strong> <%= @total_food_items %></p>
+<p><strong>Total Food Needed:</strong> <%= @total_food_items_needed %></p>
+<p><strong>Associated Recipe:</strong> <%= @recipe.name %></p>
+<p><strong>Associated Inventory:</strong> <%= @inventory.name %></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Food</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @missing_foods.each do |food| %>
+      <tr>
+        <td><%= food.name %></td>
+        <td><%= food.quantity %></td>
+        <td><%= food.price %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Back', inventories_path %>

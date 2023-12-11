@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Recipes</h1>
+
+<div id="<%= dom_id inventory %>">
+          <% @recipes.each do |recipe| %>
+           <div>
+              <span>
+              <%= recipe.name %>
+              <%= link_to 'Destroy', recipe, method: :delete, data: { confirm: 'Are you sure?' } %>
+              </span>
+              <span>
+              <p>
+              <%= recipe.description %>
+              </p>
+              </span>
+           </div>
+          <% end %>
+</div>

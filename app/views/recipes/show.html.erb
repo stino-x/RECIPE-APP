@@ -1,0 +1,54 @@
+<!-- app/views/recipes/show.html.erb -->
+<h1><%= @recipe.name %></h1>
+
+<p>Prep Time: <%= @recipe.preparationtime %> minutes</p>
+<p>Cooking Time: <%= @recipe.cookingtime %> minutes</p>
+
+<h2>Steps</h2>
+<%= simple_format(@recipe.description) %>
+
+<h2>Public</h2>
+<%= @recipe.public ? 'Public' : 'Private' %>
+<%= link_to 'Toggle', toggle_public_recipe_path(@recipe), method: :patch %>
+
+<h2>Ingredients</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Food</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipe.recipe_foods.each do |recipe_food| %>
+      <tr>
+        <td><%= recipe_food.food.name %></td>
+        <td><%= recipe_food.quantity %></td>
+        <td>
+          <%= link_to 'Modify', edit_recipe_food_path(recipe_food) %>
+          <%= link_to 'Remove', recipe_food, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<%# POP-UP %>
+
+<%= link_to 'Add Ingredient', new_recipe_food_path(@recipe), class: 'btn btn-primary' %>
+<%= link_to 'Generate Shopping List', '#', id: 'generateShoppingListBtn' %>
+
+<div id="shoppingListPopup" style="display: none;">
+  <h2>Select Inventory</h2>
+  <%= form_tag(generate_shopping_list_recipe_path(@recipe), method: :post, remote: true) do %>
+    <div class="field">
+      <%= label_tag 'inventory_id', 'Choose an Inventory:' %>
+      <%= select_tag 'inventory_id', options_from_collection_for_select(current_user.inventories, 'id', 'name'), prompt: 'Select an Inventory' %>
+    </div>
+    <%= submit_tag 'Generate Shopping List' %>
+  <% end %>
+</div>
+
+<%= link_to 'Back', recipes_path %>

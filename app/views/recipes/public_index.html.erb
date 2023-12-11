@@ -1,0 +1,29 @@
+<!-- app/views/recipes/public_index.html.erb -->
+<h1>Public Recipes</h1>
+
+<h2>Tier 1 Recipes (Food Items > 10)</h2>
+<% @public_recipes.select { |recipe_info| recipe_info[:total_food_items] > 10 }.each do |recipe_info| %>
+  <h3><%= recipe_info[:recipe].name %></h3>
+  <p>By <%= recipe_info[:user].name %></p>
+  <p>Total Food Items: <%= recipe_info[:total_food_items] %></p>
+  <p>Total Price: <%= recipe_info[:total_price] %></p>
+  <!-- Add more details as needed -->
+<% end %>
+
+<h2>Tier 2 Recipes (Food Items > 15)</h2>
+<% @public_recipes.select { |recipe_info| recipe_info[:total_food_items] > 15 }.each do |recipe_info| %>
+  <h3><%= recipe_info[:recipe].name %></h3>
+  <p>By <%= recipe_info[:user].name %></p>
+  <p>Total Food Items: <%= recipe_info[:total_food_items] %></p>
+  <p>Total Price: <%= recipe_info[:total_price] %></p>
+  <!-- Add more details as needed -->
+<% end %>
+
+<h2>Tier 3 Recipes (Food Items > 20)</h2>
+<% @public_recipes.select { |recipe_info| recipe_info[:total_food_items] > 20 }.each do |recipe_info| %>
+  <h3><%= recipe_info[:recipe].name %></h3>
+  <p>By <%= recipe_info[:user].name %></p>
+  <p>Total Food Items: <%= recipe_info[:total_food_items] %></p>
+  <p>Total Price: <%= recipe_info[:total_price] %></p>
+  <!-- Add more details as needed -->
+<% end %>
