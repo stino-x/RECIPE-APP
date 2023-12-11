@@ -76,23 +76,20 @@ class InventoriesController < ApplicationController
   def find_missing_foods(recipe)
     recipe_foods = recipe.recipe_foods.includes(:food)
     inventory_foods = @inventory.inventory_foods.includes(:food)
-  
+
     missing_foods = []
-  
+
     recipe_foods.each do |recipe_food|
       inventory_food = inventory_foods.find_by(food: recipe_food.food)
-  
-      if inventory_food.nil? || inventory_food.quantity < recipe_food.quantity
-        missing_foods << recipe_food.food
-      end
+
+      missing_foods << recipe_food.food if inventory_food.nil? || inventory_food.quantity < recipe_food.quantity
     end
-  
+
     # Ensure the missing_foods have the price attribute
     missing_foods.each { |food| food.price = food.price } # Adjust this line based on your actual implementation
-  
+
     missing_foods
   end
-  
 
   # Only allow a list of trusted parameters through.
   def inventory_params
