@@ -85,9 +85,6 @@ class InventoriesController < ApplicationController
       missing_foods << recipe_food.food if inventory_food.nil? || inventory_food.quantity < recipe_food.quantity
     end
 
-    # Ensure the missing_foods have the price attribute
-    missing_foods.each { |food| food.price = food.price } # Adjust this line based on your actual implementation
-
     missing_foods
   end
 
